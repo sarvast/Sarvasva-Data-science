@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job-Ready Python & NumPy Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Mobile Top Bar -->
+    <div class="mobile-nav">
+        <span style="font-weight: 800; color: var(--accent);">PY.NUMPY</span>
+        <button class="nav-toggle" id="nav-toggle">☰</button>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <h3 style="margin-bottom: 2rem; color: var(--accent);">MENU</h3>
+            <ul class="nav-links">
+                <li><a href="#intro">1. Introduction</a></li>
+                <li><a href="#python-core">2. Python Core</a></li>
+                <li><a href="#python-mcq">3. Python MCQs</a></li>
+                <li><a href="#numpy-deep">4. NumPy Deep Dive</a></li>
+                <li><a href="#numpy-mcq">5. NumPy MCQs</a></li>
+                <li><a href="#vectorization">6. Vectorization</a></li>
+                <li><a href="#projects">7. Real-World Projects</a></li>
+                <li><a href="#interview">8. Interview Q&A</a></li>
+                <li><a href="#hire-me" style="color: var(--success);">Hire Me</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Intro -->
+            <section id="intro">
+                <h1>Python & NumPy Mastery</h1>
+                <p style="font-size: 1.2rem; color: var(--accent);">Interactive Portfolio for Senior Roles</p>
+                <div class="cell">
+                    <div class="cell-header">
+                        <span>Why this portfolio exists</span>
+                    </div>
+                    <div style="padding: 1rem; color: var(--text-secondary);">
+                        <p>Most candidates treat NumPy as a black box. I treat it as a tool for
+                            <strong>memory-efficient, vectorized computing</strong>.
+                        </p>
+                        <p>This page demonstrates:</p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li>Deep understanding of Python internals (Memory, GIL, Scope).</li>
+                            <li>Advanced NumPy (Broadcasting, Strides, Views).</li>
+                            <li>Real-world problem solving without dependencies.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Python Core -->
+            <!-- 2. Python Core (Expanded) -->
+            <section id="python-core">
+                <h2>2. Python Core (Interview Level)</h2>
+
+                <!-- Execution Model -->
+                <h3>1. Execution Model & GIL</h3>
+                <div class="cell">
+                    <p>Python is <strong>interpreted</strong> and uses a <strong>Global Interpreter Lock (GIL)</strong>.
+                        This means only one thread executes Python bytecode at a time, making CPU-bound multi-threading
+                        inefficient. <em>Workaround: Use Multiprocessing or NumPy (which releases GIL for
+                            C-operations).</em></p>
+                </div>
+
+                <!-- Memory Reference -->
+                <h3>2. Variables are References (Not Boxes)</h3>
+                <p>In C++, `x=1` puts 1 in a box named x. In Python, `1000` is an object, and `x` is a nametag pointing
+                    to it.</p>
+                <div class="cell">
+                    <div class="cell-header">
+                        <span>reference_check.py</span>
+                        <button class="run-btn">Run</button>
+                    </div>
+                    <div class="code-block"><span class="k">def</span> <span class="f">check_memory</span>():
+                        <span class="c"># Immutable (Integer)</span>
+                        a = <span class="n">1000</span>
+                        b = a
+                        b = <span class="n">2000</span> <span class="c"># Variables are rebound, old object
+                            unchanged</span>
+
+                        <span class="c"># Mutable (List) - "The Trap"</span>
+                        l1 = [<span class="n">1</span>, <span class="n">2</span>]
+                        l2 = l1 <span class="c"># Both point to same list object</span>
+                        l2.<span class="f">append</span>(<span class="n">3</span>) <span class="c"># Modifying the
+                            OBJECT affects all references</span>
+
+                        <span class="k">print</span>(f<span class="s">"a: {a}, b: {b}"</span>)
+                        <span class="k">print</span>(f<span class="s">"l1: {l1}, l2: {l2}"</span>)
+
+                        <span class="f">check_memory</span>()
+                    </div>
+                    <div class="output-block" data-output="a: 1000, b: 2000
+l1: [1, 2, 3], l2: [1, 2, 3]"></div>
+                </div>
+
+                <!-- Time Complexity -->
+                <h3>3. Time Complexity Checks</h3>
+                <div class="cell">
+                    <div class="code-block">
+                        <span class="c"># List: O(N) lookup</span>
+                        if item in my_list: pass
+
+                        <span class="c"># Set/Dict: O(1) lookup (Hash Map)</span>
+                        if item in my_set: pass
+                    </div>
+                    <p style="font-size: 0.85rem; margin-top:0.5rem"><em>Pro Tip: Always convert lists to sets for
+                            intersection/membership checks in large data pipelines.</em></p>
+                </div>
+
+                <!-- Scope -->
+                <h3>4. Scope (LEGB Rule)</h3>
+                <p>Local -> Enclosing -> Global -> Built-in. Understanding `nonlocal` is key for closures.</p>
+                <div class="cell">
+                    <div class="cell-header">
+                        <span>scope_demo.py</span>
+                        <button class="run-btn">Run</button>
+                    </div>
+                    <div class="code-block">x = <span class="s">"Global"</span>
+
+                        <span class="k">def</span> <span class="f">outer</span>():
+                        x = <span class="s">"Enclosing"</span>
+
+                        <span class="k">def</span> <span class="f">inner</span>():
+                        nonlocal x
+                        x = <span class="s">"Modified Enclosing"</span>
+
+                        <span class="f">inner</span>()
+                        <span class="k">print</span>(x)
+
+                        <span class="f">outer</span>()
+                        <span class="k">print</span>(x)
+                    </div>
+                    <div class="output-block" data-output="Modified Enclosing
+Global"></div>
+                    <!-- 4. Generators (Memory Efficiency) -->
+                    <h3>5. Generators & Yield (Crucial for Big Data)</h3>
+                    <p>Lists load everything into RAM. Generators produce one item at a time. Essential for processing
+                        large log files or streaming data.</p>
+                    <div class="cell">
+                        <div class="code-block"><span class="k">import</span> sys
+
+                            <span class="c"># List Comprehension (Eager)</span>
+                            l = [x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span>
+                            <span class="f">range</span>(<span class="n">10000</span>)]
+
+                            <span class="c"># Generator Expression (Lazy)</span>
+                            g = (x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span>
+                            <span class="f">range</span>(<span class="n">10000</span>))
+
+                            <span class="k">print</span>(f<span class="s">"List size: {sys.getsizeof(l)} bytes"</span>)
+                            <span class="k">print</span>(f<span class="s">"Gen size: {sys.getsizeof(g)} bytes"</span>)
+                        </div>
+                        <div class="output-block" data-output="List size: 87624 bytes
+Gen size:  120 bytes"></div>
+                    </div>
+
+                    <!-- 5. Context Managers -->
+                    <h3>6. Context Managers (`with`)</h3>
+                    <p>Ensures resources (files, locks, connections) are released, even if errors occur.</p>
+                    <div class="cell">
+                        <div class="code-block"><span class="k">with</span> <span class="f">open</span>(<span
+                                class="s">"data.txt"</span>, <span class="s">"w"</span>) <span class="k">as</span> f:
+                            f.<span class="f">write</span>(<span class="s">"Hello"</span>)
+                            <span class="c"># f is auto-closed here, even if write fails</span>
+                        </div>
+                    </div>
+            </section>
+
+            <!-- 3. Python MCQs -->
+            <section id="python-mcq">
+                <h2>3. Python Assessment</h2>
+                <div class="mcq-container">
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">1. What is the output of this code?</div>
+                        <div
+                            style="background: #000; padding: 0.5rem; border-radius: 4px; font-family: monospace; margin-bottom: 1rem; color: #fff;">
+                            def f(x, l=[]):<br>
+                            &nbsp;&nbsp;l.append(x)<br>
+                            &nbsp;&nbsp;return l<br>
+                            print(f(1))<br>
+                            print(f(2))
+                        </div>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkMcq(this, false)">[1], [2]</button>
+                            <button class="option-btn" onclick="checkMcq(this, true)">[1], [1, 2]</button>
+                            <button class="option-btn" onclick="checkMcq(this, false)">[1], [1]</button>
+                        </div>
+                        <div class="explanation">
+                            <strong>Correct!</strong> Default arguments in Python are evaluated <em>once</em> at
+                            definition time. The list `l` persists across calls.
+                        </div>
+                    </div>
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">2. Which data structure is NOT immutable?</div>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkMcq(this, false)">Tuple</button>
+                            <button class="option-btn" onclick="checkMcq(this, false)">String</button>
+                            <button class="option-btn" onclick="checkMcq(this, true)">Set</button>
+                            <button class="option-btn" onclick="checkMcq(this, false)">Frozenset</button>
+                        </div>
+                        <div class="explanation">
+                            <strong>Correct!</strong> Sets are mutable (add/remove). Tuples, Strings, and Frozensets are
+                            immutable.
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 4. NumPy Deep Dive (Expanded) -->
+            <section id="numpy-deep">
+                <h2>4. NumPy Internals (Deep Dive)</h2>
+
+                <h3>1. The `ndarray` Structure</h3>
+                <p>A NumPy array is a block of memory + a header. The header contains: dtype, shape, and
+                    <strong>strides</strong>.
+                </p>
+
+                <h3>2. Broadcasting Logic</h3>
+                <p>NumPy aligns arrays starting from the trailing dimension. Dimensions with size 1 are stretched.</p>
+                <div class="cell">
+                    <div class="cell-header">
+                        <span>broadcasting.py</span>
+                        <button class="run-btn">Run</button>
+                    </div>
+                    <div class="code-block"><span class="k">import</span> numpy <span class="k">as</span> np
+
+                        <span class="c"># Shape (3, 1)</span>
+                        A = np.<span class="f">array</span>([[<span class="n">1</span>], [<span class="n">2</span>],
+                        [<span class="n">3</span>]])
+
+                        <span class="c"># Shape (3,) -> treated as (1, 3) for broadcasting</span>
+                        B = np.<span class="f">array</span>([<span class="n">10</span>, <span class="n">20</span>, <span
+                            class="n">30</span>])
+
+                        C = A + B
+                        <span class="k">print</span>(f<span class="s">"Shape: {C.shape}"</span>)
+                        <span class="k">print</span>(C)
+                    </div>
+                    <div class="output-block" data-output="Shape: (3, 3)
+[[11 21 31]
+ [12 22 32]
+ [13 23 33]]"></div>
+                </div>
+
+                <h3>3. Strides (The Magic)</h3>
+                <p>Strides are the number of bytes to jump to reach the next element. <strong>Broadcasting uses
+                        0-strides</strong> to repeat data without copying!</p>
+                <div class="cell">
+                    <div class="code-block">arr = np.<span class="f">ones</span>((<span class="n">3</span>, <span
+                            class="n">4</span>), dtype=<span class="s">'int8'</span>)
+                        <span class="k">print</span>(arr.strides)
+                        <span class="c"># Output: (4, 1) -> 4 bytes to next row, 1 byte to next col</span>
+                    </div>
+                </div>
+
+                <h3>4. Reshape vs Ravel vs Flatten</h3>
+                <div class="cell">
+                    <div class="code-block">
+                        arr = np.<span class="f">zeros</span>((<span class="n">10</span>, <span class="n">10</span>))
+
+                        <span class="c"># Reshape: O(1) - Returns View (usually)</span>
+                        v1 = arr.<span class="f">reshape</span>(<span class="n">100</span>)
+
+                        <span class="c"># Ravel: O(1) - Returns View (if contiguous)</span>
+                        v2 = arr.<span class="f">ravel</span>()
+
+                        <span class="c"># Flatten: O(N) - Returns COPY (Always)</span>
+                        v3 = arr.<span class="f">flatten</span>() <span class="c"># Safe but slow</span>
+                    </div>
+                </div>
+
+                <h3>5. Boolean Masking</h3>
+                <p>Vectorized filtering. No `if` statements needed.</p>
+                <div class="cell">
+                    <div class="code-block">
+                        data = np.<span class="f">array</span>([<span class="n">10</span>, <span class="n">5</span>,
+                        <span class="n">80</span>, <span class="n">2</span>])
+                        mask = data > <span class="n">9</span> <span class="c"># [True, False, True, False]</span>
+                        filtered = data[mask] <span class="c"># [10, 80] - Creates a COPY</span>
+                    </div>
+                </div>
+
+                <h3>6. Advanced Logic (`np.where`)</h3>
+                <p>Vectorized "If-Else". Much faster than iterating with standard Python conditional logic.</p>
+                <div class="cell">
+                    <div class="code-block">arr = np.<span class="f">array</span>([<span class="n">10</span>, <span
+                            class="n">5</span>, <span class="n">8</span>, <span class="n">20</span>])
+
+                        <span class="c"># If < 10, replace with 0, else keep original</span>
+                                <span class="c"># np.where(condition, if_true, if_false)</span>
+                                res = np.<span class="f">where</span>(arr < <span class="n">10</span>, <span
+                            class="n">0</span>, arr)
+
+                        <span class="k">print</span>(res)
+                    </div>
+                    <div class="output-block" data-output="[ 0  0  0 20]"></div>
+                </div>
+
+                <h3>7. Axis Intuition</h3>
+                <p>• <strong>Axis 0</strong>: Direction of rows (downwards) -> "Collapse the column" (e.g. mean of each
+                    col).<br>
+                    • <strong>Axis 1</strong>: Direction of columns (across) -> "Collapse the row" (e.g. mean of each
+                    row).</p>
+            </section>
+
+            <!-- 5. NumPy MCQs -->
+            <section id="numpy-mcq">
+                <h2>5. NumPy Assessment</h2>
+                <div class="mcq-container">
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">1. Can you reshape an array of size 12 into (3, 5)?</div>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkMcq(this, false)">Yes, it pads with zeros</button>
+                            <button class="option-btn" onclick="checkMcq(this, true)">No, ValueError</button>
+                            <button class="option-btn" onclick="checkMcq(this, false)">Yes, it repeats data</button>
+                        </div>
+                        <div class="explanation">
+                            <strong>Correct!</strong> Reshaping must preserve the total number of elements. 3*5 = 15 !=
+                            12.
+                        </div>
+                    </div>
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">2. Does slicing `arr[0:5]` create a copy?</div>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkMcq(this, true)">No, it returns a View</button>
+                            <button class="option-btn" onclick="checkMcq(this, false)">Yes, always a Copy</button>
+                        </div>
+                        <div class="explanation">
+                            <strong>Correct!</strong> Basic slicing returns a View (memory reference). Advanced indexing
+                            (boolean/integer lists) returns a Copy.
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. Vectorization -->
+            <section id="vectorization">
+                <h2>6. Vectorization vs Loops</h2>
+                <div class="cell">
+                    <div class="cell-header">
+                        <span>performance_test.py</span>
+                        <button class="run-btn">Run</button>
+                    </div>
+                    <div class="code-block"><span class="k">import</span> time
+                        size = <span class="n">1000000</span>
+                        data = np.random.<span class="f">rand</span>(size)
+
+                        <span class="c"># Loop (Slow)</span>
+                        start = time.<span class="f">time</span>()
+                        res = [x * <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> data]
+                        t1 = time.<span class="f">time</span>() - start
+
+                        <span class="c"># Vectorized (Fast)</span>
+                        start = time.<span class="f">time</span>()
+                        res = data * <span class="n">2</span>
+                        t2 = time.<span class="f">time</span>() - start
+
+                        <span class="k">print</span>(f<span class="s">"Loop: {t1:.4f}s"</span>)
+                        <span class="k">print</span>(f<span class="s">"NumPy: {t2:.4f}s"</span>)
+                        <span class="k">print</span>(f<span class="s">"Speedup: {t1/t2:.1f}x"</span>)
+                    </div>
+                    <div class="output-block" data-output="Loop: 0.1824s
+NumPy: 0.0021s
+Speedup: 86.9x"></div>
+                </div>
+            </section>
+
+            <!-- 7. Projects -->
+            <section id="projects">
+                <h2>7. Real-World Projects</h2>
+
+                <h3>Project A: IoT Signal Denoising</h3>
+                <div class="cell">
+                    <div class="cell-header"><span>noise_filter.py</span> <button class="run-btn">Run</button></div>
+                    <div class="code-block"><span class="c"># Moving Average without Loops</span>
+                        raw = np.array([<span class="n">10</span>, <span class="n">50</span>, <span class="n">12</span>,
+                        <span class="n">11</span>, <span class="n">60</span>, <span class="n">13</span>]) <span
+                            class="c"># Spikes at 50, 60</span>
+
+                        <span class="c"># Convolution filter (Window 3)</span>
+                        kernel = np.<span class="f">ones</span>(<span class="n">3</span>) / <span class="n">3</span>
+                        smooth = np.<span class="f">convolve</span>(raw, kernel, mode=<span class="s">'valid'</span>)
+
+                        <span class="k">print</span>(f<span class="s">"Raw: {raw}"</span>)
+                        <span class="k">print</span>(f<span class="s">"Smooth: {smooth}"</span>)
+                    </div>
+                    <div class="output-block" data-output="Raw: [10 50 12 11 60 13]
+Smooth: [24.  24.3 27.6 28. ]"></div>
+                </div>
+
+                <h3>Project B: Financial Volatility</h3>
+                <p>Calculating annualized volatility from daily returns using vector math.</p>
+                <div class="cell">
+                    <div class="cell-header"><span>volatility_calc.py</span> <button class="run-btn">Run</button></div>
+                    <div class="code-block">prices = np.<span class="f">array</span>([<span class="n">100</span>, <span
+                            class="n">102</span>, <span class="n">101</span>, <span class="n">105</span>, <span
+                            class="n">103</span>])
+
+                        <span class="c"># Daily Returns: (Price[t] / Price[t-1]) - 1</span>
+                        <span class="c"># Vectorized: prices[1:] / prices[:-1]</span>
+                        returns = (prices[<span class="n">1</span>:] / prices[:-<span class="n">1</span>]) - <span
+                            class="n">1</span>
+
+                        volatility = np.<span class="f">std</span>(returns) * np.<span class="f">sqrt</span>(<span
+                            class="n">252</span>)
+                        <span class="k">print</span>(f<span class="s">"Returns: {np.round(returns, 3)}"</span>)
+                        <span class="k">print</span>(f<span class="s">"Volatility: {volatility:.2%}"</span>)
+                    </div>
+                    <div class="output-block" data-output="Returns: [ 0.02  -0.01   0.04  -0.019]
+Volatility: 38.65%"></div>
+                </div>
+            </section>
+
+            <!-- 8. Interview Q&A -->
+            <section id="interview">
+                <h2>8. Interview Q&A</h2>
+
+                <div class="mcq-container">
+                    <div class="mcq-card">
+                        <div class="mcq-question">Q: Why is NumPy faster than Python lists?</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">
+                            <p><strong>1. Locality of Reference:</strong> NumPy arrays are contiguous blocks of memory,
+                                optimizing CPU cache usage. Python lists are arrays of pointers to scattered objects.
+                            </p>
+                            <p><strong>2. No Type Checking:</strong> NumPy uses fixed types (e.g., `int32`), while
+                                Python checks object types at every iteration.</p>
+                            <p><strong>3. SIMD Instructions:</strong> Many NumPy operations use modern CPU capabilities
+                                to process multiple data points simultaneously.</p>
+                        </div>
+                    </div>
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">Q: When should you NOT use NumPy?</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">
+                            <p>• When you need to grow the array dynamically (lists are better for `append`).</p>
+                            <p>• When working with non-numeric, unstructured data (strings/JSON).</p>
+                            <p>• For very small datasets where the overhead of importing/converting to NumPy outweighs
+                                the speed gain.</p>
+                        </div>
+                    </div>
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">Q: What is the difference between View and Copy?</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">
+                            <p><strong>View:</strong> Using slices (e.g., `arr[:]`) creates a view. It shares the same
+                                memory buffer. Modifying the view modifies the original.</p>
+                            <p><strong>Copy:</strong> Advanced indexing or `arr.copy()` allocates new memory. Crucial
+                                for data integrity when needed.</p>
+                        </div>
+                    </div>
+
+                    <div class="mcq-card">
+                        <div class="mcq-question">Q: What happens internally during broadcasting?</div>
+                        <div style="color: var(--text-secondary); font-size: 0.95rem;">
+                            <p>NumPy aligns dimensions starting from the trailing axis. If one dimension is size 1 and
+                                the other is N, NumPy theoretically "stretches" the dimension of size 1 to N without
+                                actually copying data in memory (using 0-stride), making it highly memory efficient.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Hire Me (Moved to Section 9 visually) -->
+            <section id="hire-me" style="margin-top: 4rem;">
+                <div class="mcq-card" style="text-align: center; border-color: var(--accent);">
+                    <h2 style="margin-top: 0">Hire Me</h2>
+                    <p>I am ready to solve complex data engineering problems.</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                        <span
+                            style="background: var(--bg-color); padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid var(--border);">Python
+                            Internals</span>
+                        <span
+                            style="background: var(--bg-color); padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid var(--border);">NumPy
+                            Vectorization</span>
+                        <span
+                            style="background: var(--bg-color); padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid var(--border);">Performance
+                            Tuning</span>
+                    </div>
+                    <br>
+                    <a href="#"
+                        style="display: inline-block; background: var(--accent); color: #000; padding: 0.8rem 2rem; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 1rem;">Download
+                        Resume</a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
